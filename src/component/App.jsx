@@ -1,16 +1,43 @@
-import React from 'react';
-import Footer from './footer'
-import Header from './header'
-import Note from './Note'
+import React, {useState} from "react";
+import Header from "./header";
+import Footer from "./footer";
+import Note from "./Note";
+import CreateArea from "./CreateArea";
 
+function App() {
+  const[items,setItems]=useState([])
 
-function App(params) {
-  return<div>
-    <Header/>
-    <Note/>
-    <Footer/>
-  </div>
+  function addItem(inputText) {
+
+    setItems(prevItems => {
+      return [...prevItems, inputText];
+    });
+  }
+
+  function deleteItem(id) {
+    setItems(prevItems => {
+      return prevItems.filter((item, index) => {
+        return index !== id;
+      });
+    });
+  }
+  return (
+    <div>
+      <Header />
+      <CreateArea onAdd={addItem} />
+      {items.map((item,index)=>
+        <Note
+          key={index}
+          id = {index}
+          title={item.title}
+          content={item.content}
+          deleteItem={deleteItem}
+        />
+      )}
+
+      <Footer />
+    </div>
+  );
 }
-
 
 export default App;
